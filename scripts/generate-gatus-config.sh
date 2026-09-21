@@ -105,7 +105,7 @@ while IFS= read -r endpoint; do
       GROUP="shared"
   elif [[ "$endpoint" == *"staging"* ]] || [[ "$endpoint" == *"dev"* ]]; then
       GROUP="staging"
-  elif [[ "$endpoint" == *"internal"* ]] || [[ "$endpoint" == *"admin"* ]]; then
+  elif [[ "$endpoint" == *"internal"* ]] || [[ "$endpoint" == *"admin"* ]] || [[ "$endpoint" == *"staging"* ]]; then
       GROUP="internal"
   fi
 
@@ -115,7 +115,7 @@ while IFS= read -r endpoint; do
   fi
 
   # Skip obvious local-only hosts unless explicitly requested
-  if [[ "$HOST" == *".local"* ]] || [[ "$HOST" == *"minikube"* ]] || [[ "$HOST" == "" ]] ; then
+  if [[ "$HOST" == *".local"* ]] || [[ "$HOST" == *"minikube"* ]] || [[ "$HOST" == "" ]] || [[ "$HOST" == *"acme"* ]]; then
     continue
   fi
 
