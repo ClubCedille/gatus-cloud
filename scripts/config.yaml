@@ -114,14 +114,7 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  - name: *-coder-etsmtl-club
-    group: shared
-    url: "https://*.coder.etsmtl.club/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
+  
   - name: coder-etsmtl-club
     group: shared
     url: "https://coder.etsmtl.club/"
