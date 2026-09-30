@@ -32,17 +32,47 @@ jobs:
           KUBE64: ${{ secrets.KUBE64 }}
         run: |
           chmod +x scripts/generate-gatus-config.sh
-          OUTPUT_FILE=config.yaml scripts/generate-gatus-config.sh
+          OUTPUT_FILE=scripts/config.yaml scripts/generate-gatus-config.sh
+
+      - name: Validate Gatus configuration
+        run: |
+          echo "Validating YAML syntax..."
+          yq eval '.' scripts/config.yaml > /dev/null
+
+          echo "Checking for duplicate endpoint names..."
+          DUPLICATES=$(yq eval '.endpoints[].name' scripts/config.yaml | sort | uniq -d)
+          if [ -n "$DUPLICATES" ]; then
+            echo "Error: Duplicate endpoint names found:"
+            echo "$DUPLICATES"
+            exit 1
+          fi
+
+          echo "Testing configuration with Gatus container..."
+          docker run -d --name gatus-validator \
+            -v "$PWD/scripts/config.yaml:/config/config.yaml:ro" \
+            twinproduction/gatus:latest
+
+          sleep 3
+
+          if ! docker ps -q --filter "name=gatus-validator" --filter "status=running" | grep -q .; then
+            echo "Error: Gatus failed to start with generated configuration."
+            docker logs gatus-validator
+            docker rm -f gatus-validator > /dev/null 2>&1 || true
+            exit 1
+          fi
+
+          docker rm -f gatus-validator > /dev/null 2>&1
+          echo "Gatus configuration validation successful."
 
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --quiet config.yaml; then
+          if git diff --quiet scripts/config.yaml; then
             echo "changed=false" >> $GITHUB_OUTPUT
-            echo "No changes detected in config.yaml"
+            echo "No changes detected in scripts/config.yaml"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Changes detected in config.yaml"
+            echo "Changes detected in scripts/config.yaml"
           fi
 
       - name: Commit and push changes
@@ -50,7 +80,7 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add config.yaml
+          git add scripts/config.yaml
           git commit -m "Auto-update Gatus config - $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No commit needed"
           git pull --rebase origin main
           git push origin main
@@ -72,7 +102,7 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "### Changes:" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
-            git diff HEAD~1 config.yaml | head -50 >> $GITHUB_STEP_SUMMARY
+            git diff HEAD~1 scripts/config.yaml | head -50 >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
           else
             echo "No changes detected in endpoint configuration" >> $GITHUB_STEP_SUMMARY
