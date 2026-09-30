@@ -18,7 +18,6 @@ CERTIFICATE_EXPIRATION_THRESHOLD="${CERTIFICATE_EXPIRATION_THRESHOLD:-48h}"
 CONTEXTS=(
 cedille-k8s-cedille-sandbox-gatus
 cedille-k8s-shared-gatus
-cedille-k8s-cedille-production-v2-gatus
 )
 
 # Temporary file to store all discovered endpoints
