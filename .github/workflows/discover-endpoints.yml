@@ -13,6 +13,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/generate-gatus-config.sh'
+      - 'scripts/generate-gatus-config.py'
 
 jobs:
   discover-and-update:
@@ -49,6 +50,7 @@ jobs:
 
           echo "Testing configuration with Gatus container..."
           docker run -d --name gatus-validator \
+            -e DISCORD_WEBHOOK_URL="${{ secrets.DISCORD_WEBHOOK_URL || 'https://discord.com/api/webhooks/dummy' }}" \
             -v "$PWD/scripts/config.yaml:/config/config.yaml:ro" \
             twinproduction/gatus:latest
 

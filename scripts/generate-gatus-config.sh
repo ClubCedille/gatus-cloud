@@ -85,7 +85,7 @@ storage:
 alerting:
   discord:
     enabled: true
-    webhook-url: "https://discord.com/api/webhooks/1523550041023709316/BegnppsG4eohO5Huai-SC2krnOW1hWBNf68IH73FAUvLzOdRT9OeT0et47_oCr-KO9Rh"
+    webhook-url: "${DISCORD_WEBHOOK_URL}"
 
 # Web UI configuration
 web:
@@ -185,7 +185,7 @@ EOF
 EOF
   fi
 
-  ((CONFIGURED_COUNT++))
+  CONFIGURED_COUNT=$((CONFIGURED_COUNT + 1))
 done <<< "$UNIQUE_ENDPOINTS"
 
 echo "Generated configuration file: $OUTPUT_FILE"
