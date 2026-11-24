@@ -50,6 +50,7 @@ jobs:
           echo "Testing configuration with Gatus container..."
           docker run -d --name gatus-validator \
             -v "$PWD/scripts/config.yaml:/config/config.yaml:ro" \
+            --tmpfs /data:rw,mode=1777 \
             twinproduction/gatus:latest
 
           sleep 3
