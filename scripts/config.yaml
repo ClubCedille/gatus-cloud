@@ -19,6 +19,30 @@ web:
 
 # Endpoints to monitor
 endpoints:
+  - name: algoets-staging-prodv2-cedille-club
+    group: staging
+    url: "https://algoets-staging.prodv2.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: algoets-prodv2-cedille-club
+    group: production
+    url: "https://algoets.prodv2.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: api-mercur-etsmtl-club
+    group: shared
+    url: "https://api.mercur.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: apt-cache-pkg-etsmtl-club
     group: shared
     url: "https://apt-cache.pkg.etsmtl.club/"
@@ -77,19 +101,10 @@ endpoints:
 
   - name: calidum-rotae-prodv2-cedille-club
     group: production
-    url: "tcp://calidum-rotae.prodv2.cedille.club/"
+    url: "tcp://calidum-rotae.prodv2.cedille.club"
     interval: 5m
     conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
-  - name: campusparent-etsmtl-club
-    group: shared
-    url: "https://campusparent.etsmtl.club/api"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
+      - "[CONNECTED] == true"
 
   - name: cedille-etsmtl-ca
     group: production
@@ -115,7 +130,6 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  
   - name: coder-etsmtl-club
     group: shared
     url: "https://coder.etsmtl.club/"
@@ -188,9 +202,25 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
+  - name: dependency-track-etsmtl-club
+    group: shared
+    url: "https://dependency-track.etsmtl.club/api"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: dev-lanets-ca
     group: staging
     url: "https://dev.lanets.ca/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: dify-sandbox-cedille-club
+    group: production
+    url: "https://dify.sandbox.cedille.club/console/api"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -236,6 +266,14 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
+  - name: events-etsmtl-club
+    group: shared
+    url: "https://events.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: evovelo-etsmtl-ca
     group: production
     url: "https://evovelo.etsmtl.ca/"
@@ -247,6 +285,14 @@ endpoints:
   - name: evovelo-prodv2-cedille-club
     group: production
     url: "https://evovelo.prodv2.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: external-auth-etsmtl-club
+    group: shared
+    url: "https://external.auth.etsmtl.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -287,6 +333,22 @@ endpoints:
   - name: freebsd-cache-pkg-etsmtl-club
     group: shared
     url: "https://freebsd-cache.pkg.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: gatus-sandbox-cedille-club
+    group: production
+    url: "https://gatus.sandbox.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: genesis-lanets-ca
+    group: production
+    url: "https://genesis.lanets.ca/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -348,6 +410,14 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
+  - name: httpbin-sandbox-cedille-club
+    group: production
+    url: "https://httpbin.sandbox.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: influxdb-prodv2-cedille-club
     group: production
     url: "https://influxdb.prodv2.cedille.club/"
@@ -380,6 +450,22 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
+  - name: inventaire-lanets-ca
+    group: production
+    url: "https://inventaire.lanets.ca/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: inventree-prodv2-cedille-club
+    group: production
+    url: "https://inventree.prodv2.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: lanets-ca
     group: production
     url: "https://lanets.ca/"
@@ -404,9 +490,17 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
+  - name: maintenance-etsmtl-club
+    group: shared
+    url: "https://maintenance.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: markets-algoets-ca
     group: production
-    url: "https://markets.algoets.ca/"
+    url: "https://markets.algoets.ca/verification"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -414,7 +508,7 @@ endpoints:
 
   - name: markets-dev-cedille-club
     group: staging
-    url: "https://markets.dev.cedille.club/"
+    url: "https://markets.dev.cedille.club/verification"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -422,7 +516,15 @@ endpoints:
 
   - name: markets-prodv2-cedille-club
     group: production
-    url: "https://markets.prodv2.cedille.club/"
+    url: "https://markets.prodv2.cedille.club/verification"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: matchzy-lanets-ca
+    group: production
+    url: "https://matchzy.lanets.ca/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -439,6 +541,14 @@ endpoints:
   - name: mdp-etsmtl-club
     group: shared
     url: "https://mdp.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: mercur-etsmtl-club
+    group: shared
+    url: "https://mercur.etsmtl.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -468,17 +578,9 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  - name: new-collabora-nextcloud-etsmtl-club
-    group: shared
-    url: "https://new-collabora-nextcloud.etsmtl.club/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
-  - name: new-nextcloud-etsmtl-club
-    group: shared
-    url: "https://new-nextcloud.etsmtl.club/"
+  - name: next-lanets-ca
+    group: production
+    url: "https://next.lanets.ca/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -508,6 +610,22 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
+  - name: old-collabora-nextcloud-etsmtl-club
+    group: shared
+    url: "https://old-collabora-nextcloud.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: old-nextcloud-etsmtl-club
+    group: shared
+    url: "https://old-nextcloud.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
   - name: pacman-cache-pkg-etsmtl-club
     group: shared
     url: "https://pacman-cache.pkg.etsmtl.club/"
@@ -526,7 +644,7 @@ endpoints:
 
   - name: planifets-clubapplets-ca
     group: production
-    url: "https://planifets.clubapplets.ca/"
+    url: "https://planifets.clubapplets.ca/api"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -534,7 +652,7 @@ endpoints:
 
   - name: planifets-dev-cedille-club
     group: staging
-    url: "https://planifets.dev.cedille.club/"
+    url: "https://planifets.dev.cedille.club/api"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -542,7 +660,7 @@ endpoints:
 
   - name: planifets-prodv2-cedille-club
     group: production
-    url: "https://planifets.prodv2.cedille.club/"
+    url: "https://planifets.prodv2.cedille.club/api"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -550,7 +668,7 @@ endpoints:
 
   - name: planifets-staging-cedille-club
     group: staging
-    url: "https://planifets.staging.cedille.club/"
+    url: "https://planifets.staging.cedille.club/api"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -559,6 +677,54 @@ endpoints:
   - name: planka-etsmtl-club
     group: shared
     url: "https://planka.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: policy-reporter-etsmtl-club
+    group: shared
+    url: "https://policy-reporter.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: pr-241-cedille-preview-cedille-club
+    group: production
+    url: "https://pr-241.cedille.preview.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: pr-86-synapse-preview-cedille-club
+    group: production
+    url: "https://pr-86.synapse.preview.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: pr-87-synapse-preview-cedille-club
+    group: production
+    url: "https://pr-87.synapse.preview.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: preci-archive-etsmtl-club
+    group: shared
+    url: "https://preci-archive.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: preci-pages-etsmtl-club
+    group: shared
+    url: "https://preci-pages.etsmtl.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -583,6 +749,62 @@ endpoints:
   - name: raconteurs-etsmtl-ca
     group: production
     url: "https://raconteurs.etsmtl.ca/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-algoets-etsmtl-club
+    group: shared
+    url: "https://s3.algoets.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-capra-etsmtl-club
+    group: shared
+    url: "https://s3.capra.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-conjure-etsmtl-club
+    group: shared
+    url: "https://s3.conjure.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-dci-etsmtl-club
+    group: shared
+    url: "https://s3.dci.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-etsmtl-club
+    group: shared
+    url: "https://s3.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-jdgets-etsmtl-club
+    group: shared
+    url: "https://s3.jdgets.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: s3-piranha-etsmtl-club
+    group: shared
+    url: "https://s3.piranha.etsmtl.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -620,17 +842,17 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  - name: staging-atelier-crabe-cedille-club
-    group: staging
-    url: "https://staging.atelier.crabe.cedille.club/"
+  - name: staging-atelier-crabe-etsmtl-club
+    group: shared
+    url: "https://staging.atelier.crabe.etsmtl.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  - name: staging-atelier-crabe-etsmtl-club
-    group: shared
-    url: "https://staging.atelier.crabe.etsmtl.club/"
+  - name: summercamp-dciets-com
+    group: production
+    url: "https://summercamp.dciets.com/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -646,27 +868,17 @@ endpoints:
 
   - name: summercampbot-dciets-etsmtl-club
     group: shared
-    url: "tcp://summercampbot.dciets.etsmtl.club/"
+    url: "tcp://summercampbot.dciets.etsmtl.club"
     interval: 5m
     conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
-  - name: summercamp-dciets-com
-    group: production
-    url: "https://summercamp.dciets.com/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
+      - "[CONNECTED] == true"
 
   - name: supabase-exutoire-etsmtl-club
     group: shared
-    url: "tcp://supabase.exutoire.etsmtl.club/"
+    url: "tcp://supabase.exutoire.etsmtl.club"
     interval: 5m
     conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
+      - "[CONNECTED] == true"
 
   - name: synapsets-etsmtl-ca
     group: production
@@ -676,25 +888,24 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  - name: sync-wiki-jdgets-etsmtl-club
-    group: shared
-    url: "https://sync-wiki.jdgets.etsmtl.club/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
   - name: trema-prodv2-cedille-club
     group: production
-    url: "tcp://trema.prodv2.cedille.club/"
+    url: "tcp://trema.prodv2.cedille.club"
     interval: 5m
     conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
+      - "[CONNECTED] == true"
 
   - name: vault-etsmtl-club
     group: shared
     url: "https://vault.etsmtl.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: vault-sandbox-cedille-club
+    group: production
+    url: "https://vault.sandbox.cedille.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -727,6 +938,14 @@ endpoints:
   - name: wiki-cedille-club
     group: production
     url: "https://wiki.cedille.club/"
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
+  - name: wiki-conjure-etsmtl-club
+    group: shared
+    url: "https://wiki.conjure.etsmtl.club/"
     interval: 5m
     conditions:
       - "[STATUS] == 200"
@@ -772,14 +991,6 @@ endpoints:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
 
-  - name: wiki-prodv2-cedille-club
-    group: production
-    url: "https://wiki.prodv2.cedille.club/"
-    interval: 5m
-    conditions:
-      - "[STATUS] == 200"
-      - "[CERTIFICATE_EXPIRATION] > 48h"
-
   - name: wiki-sonia-etsmtl-ca
     group: production
     url: "https://wiki.sonia.etsmtl.ca/"
@@ -811,3 +1022,4 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 48h"
+
