@@ -184,7 +184,7 @@ EOF
 EOF
   fi
 
-  ((CONFIGURED_COUNT++))
+  CONFIGURED_COUNT=$((CONFIGURED_COUNT + 1))
 done <<< "$UNIQUE_ENDPOINTS"
 
 echo "Generated configuration file: $OUTPUT_FILE"
