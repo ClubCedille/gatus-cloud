@@ -10,8 +10,12 @@ storage:
 
 alerting:
   discord:
-    enabled: true
     webhook-url: "https://discord.com/api/webhooks/1523550041023709316/BegnppsG4eohO5Huai-SC2krnOW1hWBNf68IH73FAUvLzOdRT9OeT0et47_oCr-KO9Rh"
+    default-alert:
+      enabled: true
+      failure-threshold: 3
+      success-threshold: 2
+      send-on-resolved: true
 
 # Web UI configuration
 web:
@@ -101,7 +105,7 @@ endpoints:
 
   - name: calidum-rotae-prodv2-cedille-club
     group: production
-    url: "tcp://calidum-rotae.prodv2.cedille.club"
+    url: "tcp://calidum-rotae.prodv2.cedille.club:443"
     interval: 5m
     conditions:
       - "[CONNECTED] == true"
@@ -868,14 +872,14 @@ endpoints:
 
   - name: summercampbot-dciets-etsmtl-club
     group: shared
-    url: "tcp://summercampbot.dciets.etsmtl.club"
+    url: "tcp://summercampbot.dciets.etsmtl.club:443"
     interval: 5m
     conditions:
       - "[CONNECTED] == true"
 
   - name: supabase-exutoire-etsmtl-club
     group: shared
-    url: "tcp://supabase.exutoire.etsmtl.club"
+    url: "tcp://supabase.exutoire.etsmtl.club:443"
     interval: 5m
     conditions:
       - "[CONNECTED] == true"
@@ -890,7 +894,7 @@ endpoints:
 
   - name: trema-prodv2-cedille-club
     group: production
-    url: "tcp://trema.prodv2.cedille.club"
+    url: "tcp://trema.prodv2.cedille.club:443"
     interval: 5m
     conditions:
       - "[CONNECTED] == true"

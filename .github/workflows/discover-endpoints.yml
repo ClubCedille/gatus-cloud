@@ -17,15 +17,24 @@ on:
 jobs:
   discover-and-update:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
-        run: sudo apt install jq kubectl
+        run: |
+          if ! command -v jq > /dev/null 2>&1; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+          if ! command -v kubectl > /dev/null 2>&1; then
+            curl -fsSL "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /tmp/kubectl
+            sudo install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
+          fi
 
       - name: Run endpoint discovery
         env:
@@ -47,16 +56,31 @@ jobs:
             exit 1
           fi
 
+          echo "Checking TCP endpoints for explicit port..."
+          BAD_TCP=$(yq eval '.endpoints[] | select(.url | test("^tcp://")) | select(.url | test("^tcp://[^/:]+:[0-9]+$") | not) | .url' scripts/config.yaml)
+          if [ -n "$BAD_TCP" ]; then
+            echo "Error: TCP endpoints missing port:"
+            echo "$BAD_TCP"
+            exit 1
+          fi
+
           echo "Testing configuration with Gatus container..."
           docker run -d --name gatus-validator \
             -v "$PWD/scripts/config.yaml:/config/config.yaml:ro" \
             --tmpfs /data:rw,mode=1777 \
             twinproduction/gatus:latest
 
-          sleep 3
+          sleep 5
 
           if ! docker ps -q --filter "name=gatus-validator" --filter "status=running" | grep -q .; then
             echo "Error: Gatus failed to start with generated configuration."
+            docker logs gatus-validator
+            docker rm -f gatus-validator > /dev/null 2>&1 || true
+            exit 1
+          fi
+
+          if docker logs gatus-validator 2>&1 | grep -Eq "missing port in address|invalid configuration|yaml: unmarshal errors"; then
+            echo "Error: Gatus logged configuration/endpoint validation errors:"
             docker logs gatus-validator
             docker rm -f gatus-validator > /dev/null 2>&1 || true
             exit 1
@@ -90,7 +114,7 @@ jobs:
         if: steps.check_changes.outputs.changed == 'true'
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
           event-type: config-updated
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 

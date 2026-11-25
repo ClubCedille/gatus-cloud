@@ -47,7 +47,8 @@ for ctx in "${CONTEXTS[@]}"; do
     | select(($path | tostring | contains("acme-challenge")) | not)
     | ($item.metadata.annotations["gatus.cedille/protocol"] // "https") as $proto
     | ($item.metadata.annotations["gatus.cedille/skip-monitor"] // "false") as $skip
-    | $fqdn + "|" + ($path|tostring) + "|" + $proto + "|" + ($skip|tostring)' >> "$TEMP_ENDPOINTS" || true
+    | ($item.metadata.annotations["gatus.cedille/port"] // "443") as $port
+    | $fqdn + "|" + ($path|tostring) + "|" + $proto + "|" + ($skip|tostring) + "|" + ($port|tostring)' >> "$TEMP_ENDPOINTS" || true
 
   # Get Ingress endpoints and prefer gatus annotations when present
   kubectl --context="$ctx" get ingress -A -o json 2>/dev/null \
@@ -63,7 +64,8 @@ for ctx in "${CONTEXTS[@]}"; do
     | select(($path | tostring | contains("acme-challenge")) | not)
     | ($item.metadata.annotations["gatus.cedille/protocol"] // "https") as $proto
     | ($item.metadata.annotations["gatus.cedille/skip-monitor"] // "false") as $skip
-    | ($host // "") + "|" + ($path|tostring) + "|" + $proto + "|" + ($skip|tostring)' >> "$TEMP_ENDPOINTS" || true
+    | ($item.metadata.annotations["gatus.cedille/port"] // "443") as $port
+    | ($host // "") + "|" + ($path|tostring) + "|" + $proto + "|" + ($skip|tostring) + "|" + ($port|tostring)' >> "$TEMP_ENDPOINTS" || true
 done
 
 # Sort discovered endpoints (prioritizing specific paths over root '/')
@@ -83,8 +85,12 @@ storage:
 
 alerting:
   discord:
-    enabled: true
     webhook-url: "https://discord.com/api/webhooks/1523550041023709316/BegnppsG4eohO5Huai-SC2krnOW1hWBNf68IH73FAUvLzOdRT9OeT0et47_oCr-KO9Rh"
+    default-alert:
+      enabled: true
+      failure-threshold: 3
+      success-threshold: 2
+      send-on-resolved: true
 
 # Web UI configuration
 web:
@@ -104,11 +110,12 @@ while IFS= read -r endpoint; do
   # Skip empty lines
   [[ -z "$endpoint" ]] && continue
 
-  # Each discovered line is stored as: host|path|protocol|skip
+  # Each discovered line is stored as: host|path|protocol|skip|port
   HOST=$(echo "$endpoint" | cut -d '|' -f1 | tr -d '[:space:]')
   PATH_VAL=$(echo "$endpoint" | cut -d '|' -f2 | tr -d '[:space:]')
   PROTO=$(echo "$endpoint" | cut -d '|' -f3 | tr -d '[:space:]')
   SKIP=$(echo "$endpoint" | cut -d '|' -f4 | tr -d '[:space:]')
+  PORT_VAL=$(echo "$endpoint" | cut -d '|' -f5 | tr -d '[:space:]')
 
   # Respect explicit skip annotation
   if [[ "$SKIP" == "true" ]]; then
@@ -155,6 +162,7 @@ while IFS= read -r endpoint; do
   # Default protocol and path
   PROTO=${PROTO:-https}
   PATH_VAL=${PATH_VAL:-/}
+  PORT_VAL=${PORT_VAL:-443}
   if [[ "$PATH_VAL" != /* ]]; then
     PATH_VAL="/$PATH_VAL"
   fi
@@ -162,6 +170,9 @@ while IFS= read -r endpoint; do
   # Add endpoint configuration
   if [[ "$PROTO" == "tcp" ]]; then
     TCP_HOST=$(echo "$HOST" | sed 's/\/$//')
+    if [[ "$TCP_HOST" != *:* ]]; then
+      TCP_HOST="${TCP_HOST}:${PORT_VAL}"
+    fi
     cat >> "$OUTPUT_FILE" <<EOF
   - name: ${ENDPOINT_NAME}
     group: ${GROUP}
