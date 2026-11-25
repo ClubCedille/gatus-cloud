@@ -21,6 +21,15 @@ cd gatus/scripts
 mkdir -p /var/lib/gatus && chown 65534:65534 /var/lib/gatus
 mkdir -p /etc/gatus && chown 65534:65534 /etc/gatus
 cp config.yaml /etc/gatus/config.yaml
+
+# Runtime secrets for Gatus. The committed config references the
+# DISCORD_WEBHOOK_URL variable and Gatus resolves it from its environment,
+# so the secret never lands in git.
+cat <<ENVEOF > /etc/gatus/gatus.env
+DISCORD_WEBHOOK_URL=${discord_webhook_url}
+ENVEOF
+chmod 600 /etc/gatus/gatus.env
+
 cp sync-gatus-config.sh /usr/local/bin/sync-gatus-config.sh
 chmod +x /usr/local/bin/sync-gatus-config.sh
 /usr/local/bin/sync-gatus-config.sh >> /var/log/gatus-sync.log 2>&1
@@ -29,5 +38,5 @@ echo "*/15 * * * * /usr/local/bin/sync-gatus-config.sh >> /var/log/gatus-sync.lo
 docker build -t gatus:1.1 .
 
 
-docker run -d --name gatus -p 80:8080 -v /etc/gatus:/config -v /var/lib/gatus:/data gatus:1.1
+docker run -d --name gatus -p 80:8080 --env-file /etc/gatus/gatus.env -v /etc/gatus:/config -v /var/lib/gatus:/data gatus:1.1
 

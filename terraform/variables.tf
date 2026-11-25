@@ -22,3 +22,9 @@ variable "machine_name"{
   type = string
   description = "machine name"
 }
+
+variable "discord_webhook_url" {
+  type        = string
+  description = "Discord webhook URL used by Gatus for alerting. Confidential data, place data in a secret."
+  sensitive   = true
+}

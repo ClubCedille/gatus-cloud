@@ -47,7 +47,8 @@ resource "google_compute_instance" "gatus-vm" {
     scopes = ["cloud-platform"]
   }
   metadata_startup_script = templatefile(abspath("${path.module}/../scripts/startup.sh.tftpl"), {
-    ssh_private_key = var.ssh_private_key
+    ssh_private_key     = var.ssh_private_key
+    discord_webhook_url = var.discord_webhook_url
   })
   metadata = {
   enable-oslogin = "TRUE"
